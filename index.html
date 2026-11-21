@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Romi Nails Studio — Onglerie &amp; Extension de Cils | Birkhadem, Alger</title>
+
+  <!-- Google Fonts: Cormorant Garamond (Editorial Serif) & DM Sans (Clean Modern Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Brand Design Tokens matching Romi Nails Studio visuals -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#F7F7F2',
+            forest: '#1C4523',
+            'forest-dark': '#143319',
+            olive: '#5E724C',
+            sage: '#8A9B7B',
+            'sage-border': '#DDE3D6',
+            'sage-tint': '#EFF3EA',
+            sand: '#ECE4D4',
+            ink: '#1E241E',
+            muted: '#5A6358',
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"DM Sans"', 'Inter', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            soft: '0 12px 36px -12px rgba(28, 69, 35, 0.08)',
+            card: '0 4px 20px -4px rgba(28, 69, 35, 0.05)',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-cream text-ink font-sans antialiased selection:bg-olive/20 selection:text-forest overflow-x-hidden">
+  <!-- Toast Notification Stack (replaces native alert/confirm) -->
+  <div
+    id="toast-container"
+    aria-live="polite"
+    class="fixed bottom-20 sm:bottom-6 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-24 z-50 flex flex-col gap-2 max-w-sm w-[calc(100%-2rem)] pointer-events-none"
+  ></div>
+
+  <!-- Floating WhatsApp Direct Button -->
+  <a
+    href="https://wa.me/213561204200"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Contacter Romi Nails Studio sur WhatsApp"
+    class="fixed bottom-5 right-5 z-40 group inline-flex items-center gap-2.5 bg-forest hover:bg-forest-dark text-white px-4 py-3 rounded-full shadow-soft transition-all duration-300 active:scale-95"
+  >
+    <span class="w-2 h-2 rounded-full bg-sand group-hover:bg-white transition-colors"></span>
+    <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+    </svg>
+    <span class="text-xs font-medium tracking-wide hidden sm:inline">WhatsApp</span>
+  </a>
+
+  <!-- Top Sticky Navigation Header -->
+  <header class="sticky top-0 z-30 bg-cream/92 backdrop-blur-md border-b border-sage-border">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20 gap-3">
+        <!-- Brand Logo ("Romi Nails Studio") -->
+        <button
+          type="button"
+          onclick="switchView('studio')"
+          class="flex items-center gap-3 text-left group focus:outline-none"
+        >
+          <div class="leading-none">
+            <div class="flex items-baseline gap-1.5">
+              <span class="font-serif text-2xl sm:text-[1.75rem] font-bold tracking-tight text-olive group-hover:text-forest transition-colors">
+                Romi
+              </span>
+              <span class="text-[10px] uppercase tracking-[0.2em] text-sage font-semibold">
+                Studio
+              </span>
+            </div>
+            <span class="block font-serif text-xs sm:text-sm tracking-[0.34em] uppercase text-olive/90 mt-0.5">
+              Nails
+            </span>
+          </div>
+        </button>
+
+        <!-- Desktop 3-Tab Switcher -->
+        <nav aria-label="Navigation principale" class="hidden md:flex items-center bg-white/90 p-1 rounded-full border border-sage-border shadow-card">
+          <button
+            id="nav-desktop-studio"
+            type="button"
+            onclick="switchView('studio')"
+            class="px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-forest text-white shadow-sm"
+          >
+            Le Studio &amp; Tarifs
+          </button>
+          <button
+            id="nav-desktop-reserver"
+            type="button"
+            onclick="switchView('reserver')"
+            class="px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 text-muted hover:text-forest flex items-center gap-2"
+          >
+            <span>Réserver</span>
+            <span id="nav-cart-badge" class="hidden px-1.5 py-0.5 rounded-full bg-sand text-forest text-[10px] font-bold leading-none"></span>
+          </button>
+          <button
+            id="nav-desktop-cliente"
+            type="button"
+            onclick="switchView('cliente')"
+            class="px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 text-muted hover:text-forest flex items-center gap-2"
+          >
+            <span class="w-1.5 h-1.5 rounded-full bg-olive"></span>
+            <span>Espace Cliente</span>
+          </button>
+        </nav>
+
+        <!-- Quick Call Button -->
+        <div class="flex items-center gap-2">
+          <a
+            href="tel:+213561204200"
+            class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full bg-white hover:bg-sage-tint border border-sage-border text-forest text-xs sm:text-sm font-medium transition-colors shadow-card"
+          >
+            <svg class="w-4 h-4 text-olive shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            <span class="hidden sm:inline">0561 20 42 00</span>
+            <span class="sm:hidden">Appeler</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Mobile 3-Tab Switcher -->
+      <div class="md:hidden pb-3">
+        <div class="grid grid-cols-3 bg-white p-1 rounded-2xl border border-sage-border gap-1">
+          <button
+            id="nav-mobile-studio"
+            type="button"
+            onclick="switchView('studio')"
+            class="py-2 px-2 rounded-xl text-xs font-medium transition-all bg-forest text-white shadow-sm"
+          >
+            Tarifs
+          </button>
+          <button
+            id="nav-mobile-reserver"
+            type="button"
+            onclick="switchView('reserver')"
+            class="py-2 px-2 rounded-xl text-xs font-medium transition-all text-muted flex items-center justify-center gap-1"
+          >
+            <span>Réserver</span>
+            <span id="mobile-cart-badge" class="hidden px-1.5 py-0.5 rounded-full bg-sand text-forest text-[10px] font-bold leading-none"></span>
+          </button>
+          <button
+            id="nav-mobile-cliente"
+            type="button"
+            onclick="switchView('cliente')"
+            class="py-2 px-2 rounded-xl text-xs font-medium transition-all text-muted flex items-center justify-center gap-1"
+          >
+            <span class="w-1.5 h-1.5 rounded-full bg-olive"></span>
+            <span>Espace</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- VIEW 1: LE STUDIO & TARIFS                                -->
+  <!-- ========================================================= -->
+  <main id="view-studio">
+    <!-- Hero Section -->
+    <section class="relative pt-12 pb-16 sm:pt-20 sm:pb-24 overflow-hidden">
+      <!-- Subtle soft organic shapes -->
+      <div class="pointer-events-none absolute -top-24 right-0 w-96 h-96 rounded-full bg-sage/12 blur-3xl"></div>
+      <div class="pointer-events-none absolute bottom-0 -left-24 w-80 h-80 rounded-full bg-sand/70 blur-3xl"></div>
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <!-- Left Editorial Content -->
+          <div class="lg:col-span-7 space-y-6 sm:space-y-7">
+            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-sage-border text-xs sm:text-sm text-olive font-medium shadow-card">
+              <span class="w-2 h-2 rounded-full bg-forest"></span>
+              <span>Birkhadem, Alger • Sur rendez-vous</span>
+            </div>
+
+            <h1 class="font-serif text-4xl sm:text-5xl lg:text-[3.7rem] leading-[1.08] font-medium text-forest tracking-tight">
+              L'art de la manucure &amp; du regard,
+              <span class="italic text-olive">sur-mesure</span>.
+            </h1>
+
+            <p class="text-base sm:text-lg text-muted leading-relaxed max-w-xl">
+              Bienvenue chez <strong class="font-semibold text-forest">Romi Nails Studio</strong>. Manucure russe, extensions gel ou chablon, pédicure à la paraffine et extensions de cils — dans un espace calme et soigné à Birkhadem.
+            </p>
+
+            <!-- Hero CTAs -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-1">
+              <button
+                type="button"
+                onclick="switchView('reserver')"
+                class="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-forest hover:bg-forest-dark text-white text-sm sm:text-base font-medium transition-all shadow-soft active:scale-[0.98]"
+              >
+                <span>Prendre rendez-vous</span>
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
+              </button>
+
+              <a
+                href="#tarifs"
+                class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-white hover:bg-sage-tint text-forest border border-sage-border text-sm sm:text-base font-medium transition-all"
+              >
+                <span>Consulter les tarifs</span>
+              </a>
+            </div>
+
+            <!-- Discreet Studio Reassurance -->
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 pt-4 border-t border-sage-border text-xs sm:text-sm text-muted">
+              <span class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-olive"></span>
+                Mains &amp; Pieds
+              </span>
+              <span class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-olive"></span>
+                Extension &amp; Rehaussement de cils
+              </span>
+              <span class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-olive"></span>
+                Réservation en ligne structurée
+              </span>
+            </div>
+          </div>
+
+          <!-- Right Editorial Card (Pure Inline Botanical & Studio Emblem SVG) -->
+          <div class="lg:col-span-5">
+            <div class="rounded-[2.25rem] bg-white p-5 border border-sage-border shadow-soft">
+              <div class="relative rounded-[1.75rem] overflow-hidden bg-gradient-to-br from-forest via-[#28532F] to-olive aspect-[4/4.4] p-7 flex flex-col justify-between text-cream">
+                <!-- Minimalist Botanical & Arc SVG Backdrop -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-25" viewBox="0 0 400 440" fill="none">
+                  <circle cx="315" cy="90" r="105" stroke="#ECE4D4" stroke-width="1" />
+                  <circle cx="315" cy="90" r="145" stroke="#F7F7F2" stroke-width="0.7" stroke-dasharray="4 6" />
+                  <path d="M-20 340C75 280 165 375 275 305C340 264 375 280 430 240" stroke="#ECE4D4" stroke-width="1.2" />
+                  <path d="M180 110C180 175 135 225 88 255C108 190 138 130 180 110Z" fill="#ECE4D4" fill-opacity="0.22" />
+                </svg>
+
+                <div class="relative flex items-center justify-between">
+                  <span class="px-3 py-1 rounded-full bg-white/12 backdrop-blur-sm border border-white/20 text-[11px] uppercase tracking-[0.18em] text-sand">
+                    Studio Romi
+                  </span>
+                  <span class="text-xs font-serif italic text-cream/80">@nail_art_romi</span>
+                </div>
+
+                <div class="relative my-auto py-5 space-y-3">
+                  <div class="w-10 h-px bg-sand"></div>
+                  <p class="font-serif text-3xl leading-snug font-normal text-cream">
+                    Des finitions nettes, une hygiène irréprochable et un moment rien qu'à vous.
+                  </p>
+                </div>
+
+                <!-- Interactive Quick-Jump Card -->
+                <div class="relative rounded-2xl bg-cream text-ink p-4 flex items-center justify-between gap-3 shadow-card">
+                  <div>
+                    <p class="text-[11px] uppercase tracking-[0.16em] text-olive font-semibold">Confirmation 19h</p>
+                    <p class="text-xs text-muted mt-0.5">Confirmez votre venue en 1 clic dans l'Espace Cliente</p>
+                  </div>
+                  <button
+                    type="button"
+                    onclick="switchView('cliente')"
+                    class="px-3.5 py-1.5 rounded-full bg-forest hover:bg-forest-dark text-white text-xs font-medium transition-colors shrink-0"
+                  >
+                    Voir
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- SECTION TARIFS (PRICE LIST — EXACT SERVICES & PRICES)   -->
+    <!-- ======================================================= -->
+    <section id="tarifs" class="py-16 sm:py-24 bg-white border-y border-sage-border">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
+          <p class="text-xs uppercase tracking-[0.24em] text-olive font-semibold mb-2">
+            Price List
+          </p>
+          <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium text-forest">
+            Nos Tarifs &amp; Prestations
+          </h2>
+          <p class="text-sm sm:text-base text-muted mt-2.5">
+            Cliquez sur <strong class="font-medium text-forest">+ Réserver</strong> à côté d'une prestation pour l'ajouter directement à votre rendez-vous.
+          </p>
+        </div>
+
+        <!-- 3 Category Tabs -->
+        <div class="flex justify-center mb-8 sm:mb-10">
+          <div class="inline-flex flex-wrap justify-center bg-cream p-1.5 rounded-full border border-sage-border gap-1">
+            <button
+              id="price-tab-mains"
+              type="button"
+              onclick="setPriceTab('mains')"
+              class="px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all bg-forest text-white shadow-sm"
+            >
+              Mains
+            </button>
+            <button
+              id="price-tab-pieds"
+              type="button"
+              onclick="setPriceTab('pieds')"
+              class="px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all text-muted hover:text-forest"
+            >
+              Pieds
+            </button>
+            <button
+              id="price-tab-cils"
+              type="button"
+              onclick="setPriceTab('cils')"
+              class="px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all text-muted hover:text-forest"
+            >
+              Extension de cils
+            </button>
+          </div>
+        </div>
+
+        <!-- Price List Card (inspired by the studio's vertical olive line layout) -->
+        <div class="rounded-[2rem] bg-cream/75 border border-sage-border p-6 sm:p-10 shadow-card">
+          <div class="flex items-center justify-between pb-4 mb-2 border-b-2 border-olive/50">
+            <h3 id="price-list-heading" class="font-serif text-3xl sm:text-4xl font-medium text-forest">
+              Mains
+            </h3>
+            <span class="text-xs uppercase tracking-[0.18em] text-olive font-semibold">
+              Tarifs en DA
+            </span>
+          </div>
+
+          <!-- Dynamic Price Rows -->
+          <div id="price-list-rows" class="divide-y divide-sage-border/80">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- SECTION INFORMATIONS & POLITIQUE DU STUDIO (IMPORTANT)  -->
+    <!-- ======================================================= -->
+    <section id="politique" class="py-16 sm:py-24 bg-cream">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="rounded-[2rem] bg-white border border-sage-border p-7 sm:p-12 shadow-soft relative overflow-hidden">
+          <!-- Soft sand accent ribbon behind heading, matching the studio's "IMPORTANT" visual -->
+          <div class="text-center mb-9">
+            <span class="inline-block px-8 py-1.5 rounded-full bg-sand/90 font-serif text-2xl sm:text-3xl tracking-[0.18em] font-semibold text-forest uppercase">
+              Important
+            </span>
+            <p class="text-xs sm:text-sm text-muted mt-3">
+              Informations &amp; Politique du Studio Romi pour une organisation fluide
+            </p>
+          </div>
+
+          <!-- Exact Studio Rules List -->
+          <ul class="space-y-4 sm:space-y-5 max-w-2xl mx-auto">
+            <li class="flex items-start gap-3.5">
+              <span class="w-6 h-6 rounded-full bg-sage-tint text-forest flex items-center justify-center shrink-0 mt-0.5 border border-sage-border">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </span>
+              <p class="text-sm sm:text-base text-ink leading-relaxed">
+                Lors de la prise de rendez-vous, merci de <strong class="font-semibold text-forest">préciser la prestation souhaitée</strong> (manucure, pédicure ou pose cils).
+              </p>
+            </li>
+
+            <li class="flex items-start gap-3.5">
+              <span class="w-6 h-6 rounded-full bg-sage-tint text-forest flex items-center justify-center shrink-0 mt-0.5 border border-sage-border">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </span>
+              <p class="text-sm sm:text-base text-ink leading-relaxed">
+                La <strong class="font-semibold text-forest">confirmation est obligatoire avant 19h la veille</strong> du rendez-vous (directement en 1 clic depuis votre Espace Cliente).
+              </p>
+            </li>
+
+            <li class="flex items-start gap-3.5">
+              <span class="w-6 h-6 rounded-full bg-sage-tint text-forest flex items-center justify-center shrink-0 mt-0.5 border border-sage-border">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </span>
+              <p class="text-sm sm:text-base text-ink leading-relaxed">
+                En cas d'empêchement ou d'annulation, veuillez <strong class="font-semibold text-forest">prévenir à l'avance</strong> afin de libérer le créneau.
+              </p>
+            </li>
+
+            <li class="flex items-start gap-3.5">
+              <span class="w-6 h-6 rounded-full bg-sand text-forest flex items-center justify-center shrink-0 mt-0.5 border border-olive/20">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+                </svg>
+              </span>
+              <p class="text-sm sm:text-base text-ink leading-relaxed">
+                Tout <strong class="font-semibold text-forest">retard de plus de 15 minutes</strong> entraîne l'annulation automatique du rendez-vous.
+              </p>
+            </li>
+
+            <li class="flex items-start gap-3.5">
+              <span class="w-6 h-6 rounded-full bg-sage-tint text-forest flex items-center justify-center shrink-0 mt-0.5 border border-sage-border">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <rect width="20" height="12" x="2" y="6" rx="2" /><circle cx="12" cy="12" r="2" />
+                </svg>
+              </span>
+              <p class="text-sm sm:text-base text-ink leading-relaxed">
+                Le <strong class="font-semibold text-forest">paiement s'effectue en espèces uniquement</strong> sur place au studio.
+              </p>
+            </li>
+          </ul>
+
+          <div class="mt-9 pt-6 border-t border-sage-border flex flex-col sm:flex-row items-center justify-between gap-4 max-w-2xl mx-auto">
+            <p class="font-serif italic text-2xl text-olive">Romi</p>
+            <button
+              type="button"
+              onclick="switchView('reserver')"
+              class="w-full sm:w-auto px-7 py-3 rounded-full bg-forest hover:bg-forest-dark text-white text-sm font-medium transition-all"
+            >
+              Réserver un créneau maintenant
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- VIEW 2: PRENDRE RENDEZ-VOUS (3-STEP GUIDED FLOW)          -->
+  <!-- ========================================================= -->
+  <section id="view-reserver" class="hidden min-h-[82vh] py-10 sm:py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-9">
+        <p class="text-xs uppercase tracking-[0.22em] text-olive font-semibold mb-2">
+          Réservation en ligne
+        </p>
+        <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium text-forest">
+          Planifiez votre rendez-vous
+        </h1>
+        <p class="text-sm sm:text-base text-muted mt-2">
+          Sélectionnez vos prestations exactes, votre créneau et recevez une confirmation structurée en quelques secondes.
+        </p>
+      </div>
+
+      <!-- Main Booking Card -->
+      <div class="rounded-[2rem] bg-white border border-sage-border shadow-soft overflow-hidden">
+        <!-- Stepper Header -->
+        <div class="bg-cream/90 border-b border-sage-border px-5 sm:px-8 py-4">
+          <div class="flex items-center justify-between gap-2 max-w-xl mx-auto">
+            <button
+              type="button"
+              onclick="goToStep(1)"
+              id="stepper-1"
+              class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-forest"
+            >
+              <span class="step-badge w-7 h-7 rounded-full bg-forest text-white flex items-center justify-center text-xs font-bold">1</span>
+              <span class="hidden sm:inline">Prestations</span>
+            </button>
+            <div class="flex-1 h-px bg-sage-border mx-1"></div>
+            <button
+              type="button"
+              onclick="goToStep(2)"
+              id="stepper-2"
+              class="flex items-center gap-2 text-xs sm:text-sm font-medium text-muted"
+            >
+              <span class="step-badge w-7 h-7 rounded-full bg-white border border-sage-border text-muted flex items-center justify-center text-xs font-bold">2</span>
+              <span class="hidden sm:inline">Date &amp; Heure</span>
+            </button>
+            <div class="flex-1 h-px bg-sage-border mx-1"></div>
+            <button
+              type="button"
+              onclick="goToStep(3)"
+              id="stepper-3"
+              class="flex items-center gap-2 text-xs sm:text-sm font-medium text-muted"
+            >
+              <span class="step-badge w-7 h-7 rounded-full bg-white border border-sage-border text-muted flex items-center justify-center text-xs font-bold">3</span>
+              <span class="hidden sm:inline">Confirmation</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 sm:p-9 lg:p-10">
+          <!-- STEP 1: Multi-select Services & Supplements -->
+          <div id="booking-step-1" class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+              <div>
+                <h2 class="font-serif text-2xl sm:text-3xl font-medium text-forest">
+                  1. Choisissez vos prestations
+                </h2>
+                <p class="text-sm text-muted mt-1">
+                  Vous pouvez sélectionner plusieurs soins ou suppléments (ex. VSP + Réparation ongle).
+                </p>
+              </div>
+              <button
+                type="button"
+                id="clear-selection-btn"
+                onclick="clearSelection()"
+                class="hidden self-start sm:self-end text-xs font-medium text-olive hover:text-forest underline underline-offset-4"
+              >
+                Tout désélectionner
+              </button>
+            </div>
+
+            <!-- Category Tabs inside Step 1 -->
+            <div class="flex flex-wrap gap-2">
+              <button
+                id="book-cat-mains"
+                type="button"
+                onclick="setBookingCategory('mains')"
+                class="px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-forest text-white"
+              >
+                Mains
+              </button>
+              <button
+                id="book-cat-pieds"
+                type="button"
+                onclick="setBookingCategory('pieds')"
+                class="px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-cream text-muted border border-sage-border hover:text-forest"
+              >
+                Pieds
+              </button>
+              <button
+                id="book-cat-cils"
+                type="button"
+                onclick="setBookingCategory('cils')"
+                class="px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-cream text-muted border border-sage-border hover:text-forest"
+              >
+                Extension de cils
+              </button>
+            </div>
+
+            <!-- Selectable Services Grid -->
+            <div id="booking-services-grid" class="grid sm:grid-cols-2 gap-3">
+              <!-- Populated via JS -->
+            </div>
+
+            <!-- Dynamic Total & Selection Summary Bar -->
+            <div class="rounded-2xl bg-cream border border-sage-border p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="space-y-1">
+                <p class="text-xs uppercase tracking-[0.16em] text-olive font-semibold">
+                  Votre sélection (<span id="summary-count">0</span>)
+                </p>
+                <p id="summary-items-text" class="text-xs sm:text-sm text-muted">
+                  Aucune prestation sélectionnée pour le moment.
+                </p>
+              </div>
+              <div class="flex items-center justify-between sm:justify-end gap-4 shrink-0">
+                <div class="text-left sm:text-right">
+                  <p class="text-[11px] text-muted uppercase tracking-wider">Total estimé</p>
+                  <p id="summary-total-price" class="font-serif text-2xl font-semibold text-forest">0 DA</p>
+                </div>
+                <button
+                  type="button"
+                  onclick="validateStep1AndProceed()"
+                  class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-forest hover:bg-forest-dark text-white text-sm font-medium transition-all"
+                >
+                  <span>Continuer</span>
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 2: Date & Time Slot -->
+          <div id="booking-step-2" class="hidden space-y-7">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h2 class="font-serif text-2xl sm:text-3xl font-medium text-forest">
+                  2. Choisissez votre date et votre créneau
+                </h2>
+                <p class="text-sm text-muted mt-1">
+                  Sélectionnez l'un des prochains jours disponibles au studio de Birkhadem.
+                </p>
+              </div>
+              <span id="step2-total-pill" class="self-start px-3.5 py-1.5 rounded-full bg-sage-tint border border-sage-border text-forest text-xs font-semibold"></span>
+            </div>
+
+            <!-- Upcoming Open Days -->
+            <div>
+              <p class="text-xs uppercase tracking-[0.16em] text-olive font-semibold mb-3">
+                Date souhaitée
+              </p>
+              <div id="booking-days-grid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2.5">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <!-- Time Slots -->
+            <div>
+              <p class="text-xs uppercase tracking-[0.16em] text-olive font-semibold mb-3">
+                Créneau horaire
+              </p>
+              <div id="booking-slots-grid" class="grid grid-cols-3 sm:grid-cols-6 gap-2.5">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-4 border-t border-sage-border">
+              <button
+                type="button"
+                onclick="goToStep(1)"
+                class="px-5 py-2.5 rounded-full text-sm font-medium text-muted hover:text-forest hover:bg-cream transition-colors"
+              >
+                ← Retour
+              </button>
+              <button
+                type="button"
+                onclick="goToStep(3)"
+                class="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-forest hover:bg-forest-dark text-white text-sm font-medium transition-all"
+              >
+                <span>Finaliser</span>
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 3: Client Details & Mandatory Policy Acceptance -->
+          <div id="booking-step-3" class="hidden space-y-6">
+            <div>
+              <h2 class="font-serif text-2xl sm:text-3xl font-medium text-forest">
+                3. Vos coordonnées &amp; validation
+              </h2>
+              <p class="text-sm text-muted mt-1">
+                Vérifiez votre récapitulatif et validez les règles du studio pour confirmer votre demande.
+              </p>
+            </div>
+
+            <!-- Complete Recap Box -->
+            <div class="rounded-2xl bg-cream border border-sage-border p-5 space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <p class="text-xs uppercase tracking-[0.16em] text-olive font-semibold">Récapitulatif</p>
+                <button
+                  type="button"
+                  onclick="goToStep(1)"
+                  class="text-xs font-semibold text-olive hover:text-forest underline underline-offset-4"
+                >
+                  Modifier
+                </button>
+              </div>
+              <p id="recap-services-list" class="text-sm font-medium text-forest leading-relaxed"></p>
+              <div class="pt-2.5 border-t border-sage-border flex flex-wrap items-center justify-between gap-2 text-sm">
+                <span id="recap-date-time" class="text-muted"></span>
+                <span id="recap-total" class="font-serif text-xl font-semibold text-forest"></span>
+              </div>
+            </div>
+
+            <form id="booking-form" onsubmit="handleBookingSubmit(event)" class="space-y-5" novalidate>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="client-firstname" class="block text-sm font-medium text-forest mb-1.5">
+                    Prénom <span class="text-olive">*</span>
+                  </label>
+                  <input
+                    id="client-firstname"
+                    type="text"
+                    value="Ines B."
+                    placeholder="Ex : Ines"
+                    class="w-full px-4 py-3 rounded-xl bg-cream/60 border border-sage-border text-ink placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-olive/35 focus:border-olive text-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label for="client-phone" class="block text-sm font-medium text-forest mb-1.5">
+                    Numéro de téléphone <span class="text-olive">*</span>
+                  </label>
+                  <input
+                    id="client-phone"
+                    type="tel"
+                    value="0555 24 89 10"
+                    placeholder="Ex : 0555 00 00 00"
+                    class="w-full px-4 py-3 rounded-xl bg-cream/60 border border-sage-border text-ink placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-olive/35 focus:border-olive text-sm"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Mandatory Studio Policy Checkbox -->
+              <label
+                for="policy-checkbox"
+                class="flex items-start gap-3.5 p-4 rounded-2xl bg-sand/45 border border-olive/25 cursor-pointer hover:bg-sand/65 transition-colors"
+              >
+                <input
+                  id="policy-checkbox"
+                  type="checkbox"
+                  class="mt-0.5 w-5 h-5 rounded border-olive text-forest focus:ring-olive accent-[#1C4523] shrink-0 cursor-pointer"
+                />
+                <span class="text-xs sm:text-sm text-ink leading-relaxed">
+                  J'accepte la politique du studio (<strong class="font-semibold text-forest">confirmation avant 19h la veille</strong>, <strong class="font-semibold text-forest">annulation automatique après 15 min de retard</strong>, <strong class="font-semibold text-forest">paiement en espèces</strong>).
+                </span>
+              </label>
+
+              <p id="booking-error" class="hidden text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5"></p>
+
+              <div class="flex items-center justify-between pt-3 border-t border-sage-border">
+                <button
+                  type="button"
+                  onclick="goToStep(2)"
+                  class="px-5 py-2.5 rounded-full text-sm font-medium text-muted hover:text-forest hover:bg-cream transition-colors"
+                >
+                  ← Retour
+                </button>
+                <button
+                  type="submit"
+                  class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-forest hover:bg-forest-dark text-white text-sm font-medium transition-all shadow-soft active:scale-[0.98]"
+                >
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  <span>Confirmer mon rendez-vous</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- STEP 4: Confirmation Screen + Formatted WhatsApp Link -->
+          <div id="booking-step-success" class="hidden text-center py-6 space-y-6">
+            <div class="w-16 h-16 rounded-full bg-sage-tint text-forest mx-auto flex items-center justify-center border border-sage-border">
+              <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+
+            <div class="space-y-2 max-w-lg mx-auto">
+              <p class="text-xs uppercase tracking-[0.22em] text-olive font-semibold">
+                Demande enregistrée
+              </p>
+              <h3 class="font-serif text-3xl font-medium text-forest">
+                Merci <span id="success-name"></span> !
+              </h3>
+              <p class="text-sm text-muted leading-relaxed">
+                Votre rendez-vous pour <strong id="success-services" class="text-forest"></strong> est enregistré le
+                <strong id="success-datetime" class="text-forest"></strong> (<span id="success-total" class="font-semibold text-forest"></span>).
+                Il a été ajouté automatiquement dans votre <strong class="text-forest">Espace Cliente</strong>.
+              </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <button
+                type="button"
+                onclick="switchView('cliente')"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-forest hover:bg-forest-dark text-white text-sm font-medium transition-all"
+              >
+                <span>Ouvrir mon Espace Cliente</span>
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
+              </button>
+
+              <a
+                id="whatsapp-recap-link"
+                href="https://wa.me/213561204200"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-sage-tint hover:bg-sand text-forest border border-sage-border text-sm font-medium transition-colors"
+              >
+                <svg class="w-4 h-4 text-olive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                </svg>
+                <span>Envoyer le récapitulatif complet sur WhatsApp</span>
+              </a>
+            </div>
+
+            <button
+              type="button"
+              onclick="resetBooking()"
+              class="text-xs font-medium text-muted hover:text-forest underline underline-offset-4"
+            >
+              Planifier un autre rendez-vous
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- VIEW 3: ESPACE CLIENTE (SYNCED DEMO + 19H CONFIRMATION)   -->
+  <!-- ========================================================= -->
+  <section id="view-cliente" class="hidden min-h-[82vh] py-8 sm:py-12">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+      <!-- Demo Header Strip -->
+      <div class="rounded-2xl bg-sand/65 border border-olive/25 px-5 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <span class="w-2 h-2 rounded-full bg-forest shrink-0"></span>
+          <p class="text-xs sm:text-sm text-ink">
+            <strong>Espace Cliente (Démo) — Ines B.</strong>
+            <span class="text-muted"> • Confirmez votre présence avant 19h la veille en un seul clic.</span>
+          </p>
+        </div>
+        <button
+          type="button"
+          onclick="switchView('reserver')"
+          class="self-start sm:self-center shrink-0 px-4 py-1.5 rounded-full bg-forest hover:bg-forest-dark text-white text-xs font-medium transition-colors"
+        >
+          + Nouveau rendez-vous
+        </button>
+      </div>
+
+      <!-- Profile + Loyalty Counter Row -->
+      <div class="grid md:grid-cols-12 gap-5">
+        <!-- Profile Card -->
+        <div class="md:col-span-7 rounded-3xl bg-white border border-sage-border p-6 shadow-card flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-forest text-cream font-serif text-2xl font-medium flex items-center justify-center shrink-0">
+            IB
+          </div>
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.18em] text-olive font-semibold">Profil Cliente</p>
+            <h1 id="cliente-profile-name" class="font-serif text-2xl sm:text-3xl font-medium text-forest">
+              Ines B.
+            </h1>
+            <p class="text-xs sm:text-sm text-muted mt-0.5">
+              Romi Nails Studio • Birkhadem, Alger
+            </p>
+          </div>
+        </div>
+
+        <!-- Loyalty Counter Card (4/5 visites) -->
+        <div class="md:col-span-5 rounded-3xl bg-white border border-sage-border p-6 shadow-card flex flex-col justify-between gap-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] uppercase tracking-[0.18em] text-olive font-semibold">Carte Fidélité</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-sage-tint text-forest text-xs font-semibold">4 / 5 visites</span>
+          </div>
+          <div class="flex items-center gap-2 py-1">
+            <!-- 4 filled olive/forest stamps + 1 remaining -->
+            <span class="w-8 h-8 rounded-full bg-forest text-white flex items-center justify-center text-xs font-bold">✓</span>
+            <span class="w-8 h-8 rounded-full bg-forest text-white flex items-center justify-center text-xs font-bold">✓</span>
+            <span class="w-8 h-8 rounded-full bg-forest text-white flex items-center justify-center text-xs font-bold">✓</span>
+            <span class="w-8 h-8 rounded-full bg-forest text-white flex items-center justify-center text-xs font-bold">✓</span>
+            <span class="w-8 h-8 rounded-full bg-cream border-2 border-dashed border-olive/50 text-olive flex items-center justify-center text-xs font-semibold">5</span>
+          </div>
+          <p class="text-xs text-muted">
+            Plus qu'<strong class="text-forest">1 visite</strong> pour bénéficier d'une option offerte (Effet aquarium ou Pierre Swarovski).
+          </p>
+        </div>
+      </div>
+
+      <!-- Next Appointment Card (Signature Feature: Confirmation avant 19h la veille) -->
+      <div class="rounded-[2rem] bg-white border border-sage-border p-6 sm:p-8 shadow-soft">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 mb-6 border-b border-sage-border">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-olive font-semibold">Suivi des rendez-vous</p>
+            <h2 class="font-serif text-2xl sm:text-3xl font-medium text-forest mt-0.5">
+              Vos prochains rendez-vous
+            </h2>
+          </div>
+          <span id="cliente-upcoming-count" class="self-start sm:self-center px-3 py-1 rounded-full bg-cream border border-sage-border text-xs font-semibold text-forest"></span>
+        </div>
+
+        <div id="cliente-appointments-container" class="space-y-4">
+          <!-- Rendered dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- Previous Visits History -->
+      <div class="rounded-[2rem] bg-white border border-sage-border p-6 sm:p-8 shadow-card">
+        <h2 class="font-serif text-2xl sm:text-3xl font-medium text-forest mb-5">
+          Historique des prestations
+        </h2>
+        <div class="divide-y divide-sage-border">
+          <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <p class="text-sm sm:text-base font-medium text-forest">VSP Rubber Base + Effet aquarium</p>
+              <p class="text-xs text-muted mt-0.5">02 novembre • Mains • Paiement espèces</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="font-serif text-lg font-semibold text-forest">3 400 DA</span>
+              <span class="px-2.5 py-1 rounded-full bg-cream border border-sage-border text-[11px] font-medium text-muted">Réalisé</span>
+            </div>
+          </div>
+
+          <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <p class="text-sm sm:text-base font-medium text-forest">Extension de cils — Effet naturel</p>
+              <p class="text-xs text-muted mt-0.5">18 octobre • Regard • Paiement espèces</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="font-serif text-lg font-semibold text-forest">4 000 DA</span>
+              <span class="px-2.5 py-1 rounded-full bg-cream border border-sage-border text-[11px] font-medium text-muted">Réalisé</span>
+            </div>
+          </div>
+
+          <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <p class="text-sm sm:text-base font-medium text-forest">Pédicure russe (soin à la paraffine)</p>
+              <p class="text-xs text-muted mt-0.5">29 septembre • Pieds • Paiement espèces</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="font-serif text-lg font-semibold text-forest">5 000 DA</span>
+              <span class="px-2.5 py-1 rounded-full bg-cream border border-sage-border text-[11px] font-medium text-muted">Réalisé</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer with Exact Coordinates -->
+  <footer class="bg-white border-t border-sage-border py-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left">
+      <div>
+        <p class="font-serif text-xl font-bold text-olive tracking-wide">Romi Nails Studio</p>
+        <p class="text-xs text-muted mt-1">
+          Studio Romi • Birkhadem, Alger • Sur rendez-vous • Paiement en espèces uniquement
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-medium">
+        <a href="tel:+213561204200" class="text-forest hover:text-olive transition-colors">
+          Tél : 0561 20 42 00
+        </a>
+        <span class="text-sage-border">•</span>
+        <a
+          href="https://www.instagram.com/nail_art_romi/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-olive hover:text-forest transition-colors"
+        >
+          Instagram @nail_art_romi
+        </a>
+        <span class="text-sage-border">•</span>
+        <a
+          href="https://maps.app.goo.gl/a31pAvMeCisGX3Z89"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-muted hover:text-forest transition-colors"
+        >
+          Google Maps
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================= -->
+  <!-- APPLICATION LOGIC (CATALOG, BOOKING, WHATSAPP & CLIENTE)  -->
+  <!-- ========================================================= -->
+  <script>
+    // ---------------------------------------------------------
+    // 1. EXACT PRICE LIST CATALOG (MAINS, PIEDS, EXTENSION DE CILS)
+    // ---------------------------------------------------------
+    const CATALOG = {
+      mains: {
+        label: 'Mains',
+        items: [
+          { id: 'm-vsp', name: 'VSP Rubber Base', price: 3000, displayPrice: '3 000 DA' },
+          { id: 'm-gel', name: 'Gel sur ongle naturel', price: 3500, displayPrice: '3 500 DA' },
+          { id: 'm-capsule', name: 'Pose capsule', price: 4000, displayPrice: '4 000 DA' },
+          { id: 'm-remplissage', name: 'Remplissage', price: 3500, displayPrice: '3 500 DA' },
+          { id: 'm-french', name: 'French classique', price: 4500, displayPrice: '4 500 DA' },
+          { id: 'm-babyboomer', name: 'Baby boomer', price: 4500, displayPrice: '4 500 DA' },
+          { id: 'm-depose', name: 'Dépose gel / capsule', price: 1000, displayPrice: '1 000 DA' },
+          { id: 'm-chablon', name: 'Extension Chablon', price: 5000, displayPrice: '5 000 DA' },
+          { id: 'm-reparation', name: 'Réparation ongle', price: 300, displayPrice: '300 DA' },
+          { id: 'm-aquarium', name: 'Effet aquarium', price: 400, displayPrice: '400 DA' },
+          { id: 'm-swarovski', name: 'Pierre Swarovski', price: 400, displayPrice: '400 DA' },
+        ],
+      },
+      pieds: {
+        label: 'Pieds',
+        items: [
+          { id: 'p-vsp', name: 'Vernis semi-permanent', price: 2800, displayPrice: '2 800 DA' },
+          { id: 'p-ext', name: 'Extensions / capsule (les deux grands orteils)', price: 500, displayPrice: '+500 DA' },
+          { id: 'p-french', name: 'French classique (Pieds)', price: 500, displayPrice: '+500 DA' },
+          { id: 'p-russe', name: 'Pédicure russe (soin à la paraffine)', price: 5000, displayPrice: '5 000 DA' },
+        ],
+      },
+      cils: {
+        label: 'Extension de cils',
+        items: [
+          { id: 'c-naturel', name: 'Effet naturel', price: 4000, displayPrice: '4 000 DA' },
+          { id: 'c-charge', name: 'Effet naturel chargé', price: 4500, displayPrice: '4 500 DA' },
+          { id: 'c-mixte', name: 'Effet mixte', price: 5000, displayPrice: '5 000 DA' },
+          { id: 'c-intense', name: 'Mixte intense', price: 5500, displayPrice: '5 500 DA' },
+          { id: 'c-depose', name: 'Dépose (cils)', price: 1000, displayPrice: '1 000 DA' },
+          { id: 'c-rehaussement', name: 'Rehaussement de cils', price: 2500, displayPrice: '2 500 DA' },
+          { id: 'c-coloration', name: 'Coloration cils', price: 1000, displayPrice: '1 000 DA' },
+        ],
+      },
+    };
+
+    const ALL_SERVICES = [
+      ...CATALOG.mains.items.map((i) => ({ ...i, category: 'Mains' })),
+      ...CATALOG.pieds.items.map((i) => ({ ...i, category: 'Pieds' })),
+      ...CATALOG.cils.items.map((i) => ({ ...i, category: 'Extension de cils' })),
+    ];
+
+    const TIME_SLOTS = ['09:30', '11:00', '13:30', '15:00', '16:30', '18:00'];
+
+    // Generate next 6 open days (skipping Friday as a standard studio rest day)
+    function generateOpenDays() {
+      const shortNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+      const fullNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+      const months = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+
+      const days = [];
+      const cursor = new Date();
+      cursor.setDate(cursor.getDate() + 1); // Start from tomorrow
+
+      while (days.length < 6) {
+        if (cursor.getDay() !== 5) {
+          days.push({
+            id: cursor.toISOString().split('T')[0],
+            shortName: shortNames[cursor.getDay()],
+            fullName: fullNames[cursor.getDay()],
+            dayNumber: cursor.getDate(),
+            month: months[cursor.getMonth()],
+            label: `${fullNames[cursor.getDay()]} ${cursor.getDate()} ${months[cursor.getMonth()]}`,
+          });
+        }
+        cursor.setDate(cursor.getDate() + 1);
+      }
+      return days;
+    }
+
+    const OPEN_DAYS = generateOpenDays();
+
+    // Format price cleanly in DA (e.g. 4 500 DA)
+    function formatDA(amount) {
+      return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} DA`;
+    }
+
+    // ---------------------------------------------------------
+    // 2. CENTRAL APPLICATION STATE
+    // ---------------------------------------------------------
+    const state = {
+      activeView: 'studio',
+      priceTab: 'mains',
+      bookingCategory: 'mains',
+      bookingStep: 1,
+      selectedServiceIds: ['m-vsp'], // Pre-selected default for smooth testing
+      selectedDayId: OPEN_DAYS[0].id,
+      selectedSlot: '11:00',
+      appointments: [
+        {
+          id: 'demo-appt-1',
+          clientName: 'Ines B.',
+          servicesText: 'Baby boomer (Mains)',
+          total: 4500,
+          dateLabel: OPEN_DAYS[0].label,
+          slot: '15:00',
+          confirmed: false, // Shows "Confirmation requise avant 19h la veille" by default
+          isNew: false,
+        },
+      ],
+    };
+
+    // ---------------------------------------------------------
+    // 3. TOAST NOTIFICATIONS (NO ALERT / CONFIRM)
+    // ---------------------------------------------------------
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className =
+        'pointer-events-auto rounded-2xl bg-forest text-cream px-4 py-3 shadow-soft border border-white/10 text-xs sm:text-sm flex items-center gap-3 transition-all duration-300 translate-y-2 opacity-0';
+      toast.innerHTML = `
+        <span class="w-2 h-2 rounded-full bg-sand shrink-0"></span>
+        <span class="leading-snug">${message}</span>
+      `;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => toast.classList.remove('translate-y-2', 'opacity-0'));
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3600);
+    }
+
+    // ---------------------------------------------------------
+    // 4. VIEW SWITCHING (3 TABS)
+    // ---------------------------------------------------------
+    function switchView(view) {
+      state.activeView = view;
+      const views = ['studio', 'reserver', 'cliente'];
+
+      views.forEach((v) => {
+        const panel = document.getElementById(`view-${v}`);
+        const deskBtn = document.getElementById(`nav-desktop-${v}`);
+        const mobBtn = document.getElementById(`nav-mobile-${v}`);
+        const isActive = v === view;
+
+        if (isActive) {
+          panel.classList.remove('hidden');
+          deskBtn.className =
+            'px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-forest text-white shadow-sm' +
+            (v !== 'studio' ? ' flex items-center gap-2' : '');
+          mobBtn.className =
+            'py-2 px-2 rounded-xl text-xs font-medium transition-all bg-forest text-white shadow-sm' +
+            (v !== 'studio' ? ' flex items-center justify-center gap-1' : '');
+        } else {
+          panel.classList.add('hidden');
+          deskBtn.className =
+            'px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 text-muted hover:text-forest' +
+            (v !== 'studio' ? ' flex items-center gap-2' : '');
+          mobBtn.className =
+            'py-2 px-2 rounded-xl text-xs font-medium transition-all text-muted' +
+            (v !== 'studio' ? ' flex items-center justify-center gap-1' : '');
+        }
+      });
+
+      if (view === 'reserver') {
+        renderBookingServices();
+        updateSelectionSummary();
+      }
+      if (view === 'cliente') {
+        renderClientAppointments();
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ---------------------------------------------------------
+    // 5. VIEW 1: INTERACTIVE PRICE LIST
+    // ---------------------------------------------------------
+    function setPriceTab(categoryKey) {
+      state.priceTab = categoryKey;
+      ['mains', 'pieds', 'cils'].forEach((key) => {
+        const btn = document.getElementById(`price-tab-${key}`);
+        if (key === categoryKey) {
+          btn.className = 'px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all bg-forest text-white shadow-sm';
+        } else {
+          btn.className = 'px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all text-muted hover:text-forest';
+        }
+      });
+      renderPriceList();
+    }
+
+    function renderPriceList() {
+      const cat = CATALOG[state.priceTab];
+      document.getElementById('price-list-heading').textContent = cat.label;
+
+      const rowsContainer = document.getElementById('price-list-rows');
+      rowsContainer.innerHTML = cat.items
+        .map(
+          (item) => `
+            <div class="py-4 flex items-center justify-between gap-4 group">
+              <div class="pr-2">
+                <p class="text-sm sm:text-base font-medium text-ink group-hover:text-forest transition-colors">
+                  ${item.name}
+                </p>
+              </div>
+              <div class="flex items-center gap-3 sm:gap-5 shrink-0 pl-4 border-l border-olive/30">
+                <span class="font-serif text-lg sm:text-xl font-semibold text-forest whitespace-nowrap">
+                  ${item.displayPrice}
+                </span>
+                <button
+                  type="button"
+                  onclick="quickBookService('${item.id}', '${state.priceTab}')"
+                  class="px-3 sm:px-3.5 py-1.5 rounded-full bg-white hover:bg-forest hover:text-white text-forest border border-sage-border text-xs font-medium transition-all whitespace-nowrap"
+                >
+                  + Réserver
+                </button>
+              </div>
+            </div>
+          `
+        )
+        .join('');
+    }
+
+    function quickBookService(serviceId, categoryKey) {
+      if (!state.selectedServiceIds.includes(serviceId)) {
+        state.selectedServiceIds = [serviceId];
+      }
+      state.bookingCategory = categoryKey;
+      setBookingCategory(categoryKey);
+      switchView('reserver');
+      goToStep(1);
+      const srv = ALL_SERVICES.find((s) => s.id === serviceId);
+      if (srv) {
+        showToast(`Prestation ajoutée : ${srv.name}`);
+      }
+    }
+
+    // ---------------------------------------------------------
+    // 6. VIEW 2: 3-STEP BOOKING FLOW
+    // ---------------------------------------------------------
+    function setBookingCategory(categoryKey) {
+      state.bookingCategory = categoryKey;
+      ['mains', 'pieds', 'cils'].forEach((key) => {
+        const btn = document.getElementById(`book-cat-${key}`);
+        if (key === categoryKey) {
+          btn.className = 'px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-forest text-white';
+        } else {
+          btn.className = 'px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-cream text-muted border border-sage-border hover:text-forest';
+        }
+      });
+      renderBookingServices();
+    }
+
+    function renderBookingServices() {
+      const cat = CATALOG[state.bookingCategory];
+      const grid = document.getElementById('booking-services-grid');
+
+      grid.innerHTML = cat.items
+        .map((item) => {
+          const isSelected = state.selectedServiceIds.includes(item.id);
+          return `
+            <button
+              type="button"
+              onclick="toggleServiceSelection('${item.id}')"
+              class="text-left p-4 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
+                isSelected
+                  ? 'bg-sage-tint border-forest ring-1 ring-forest'
+                  : 'bg-cream/50 border-sage-border hover:bg-cream'
+              }"
+            >
+              <div>
+                <p class="text-sm font-medium text-ink">${item.name}</p>
+                <p class="font-serif text-base font-semibold text-forest mt-0.5">${item.displayPrice}</p>
+              </div>
+              <span class="w-5 h-5 rounded-md border flex items-center justify-center shrink-0 transition-colors ${
+                isSelected ? 'bg-forest border-forest text-white' : 'bg-white border-olive/40'
+              }">
+                ${
+                  isSelected
+                    ? '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12" /></svg>'
+                    : ''
+                }
+              </span>
+            </button>
+          `;
+        })
+        .join('');
+    }
+
+    function toggleServiceSelection(serviceId) {
+      if (state.selectedServiceIds.includes(serviceId)) {
+        state.selectedServiceIds = state.selectedServiceIds.filter((id) => id !== serviceId);
+      } else {
+        state.selectedServiceIds.push(serviceId);
+      }
+      renderBookingServices();
+      updateSelectionSummary();
+    }
+
+    function clearSelection() {
+      state.selectedServiceIds = [];
+      renderBookingServices();
+      updateSelectionSummary();
+    }
+
+    function getSelectedServices() {
+      return state.selectedServiceIds
+        .map((id) => ALL_SERVICES.find((s) => s.id === id))
+        .filter(Boolean);
+    }
+
+    function updateSelectionSummary() {
+      const selected = getSelectedServices();
+      const total = selected.reduce((sum, s) => sum + s.price, 0);
+
+      document.getElementById('summary-count').textContent = selected.length;
+      document.getElementById('summary-total-price').textContent = formatDA(total);
+
+      const clearBtn = document.getElementById('clear-selection-btn');
+      const itemsText = document.getElementById('summary-items-text');
+      const navBadge = document.getElementById('nav-cart-badge');
+      const mobBadge = document.getElementById('mobile-cart-badge');
+
+      if (selected.length > 0) {
+        itemsText.textContent = selected.map((s) => s.name).join(' + ');
+        clearBtn.classList.remove('hidden');
+        navBadge.textContent = selected.length;
+        navBadge.classList.remove('hidden');
+        mobBadge.textContent = selected.length;
+        mobBadge.classList.remove('hidden');
+      } else {
+        itemsText.textContent = 'Aucune prestation sélectionnée pour le moment.';
+        clearBtn.classList.add('hidden');
+        navBadge.classList.add('hidden');
+        mobBadge.classList.add('hidden');
+      }
+    }
+
+    function validateStep1AndProceed() {
+      if (state.selectedServiceIds.length === 0) {
+        showToast('Veuillez sélectionner au moins une prestation pour continuer.');
+        return;
+      }
+      goToStep(2);
+    }
+
+    function renderBookingDays() {
+      const grid = document.getElementById('booking-days-grid');
+      grid.innerHTML = OPEN_DAYS.map((day) => {
+        const isSelected = state.selectedDayId === day.id;
+        return `
+          <button
+            type="button"
+            onclick="selectBookingDay('${day.id}')"
+            class="p-3 rounded-2xl border text-center transition-all ${
+              isSelected
+                ? 'bg-forest text-white border-forest shadow-sm'
+                : 'bg-cream/60 text-ink border-sage-border hover:bg-sage-tint'
+            }"
+          >
+            <p class="text-[11px] uppercase tracking-wider font-medium ${isSelected ? 'text-sand' : 'text-olive'}">
+              ${day.shortName}
+            </p>
+            <p class="font-serif text-xl font-semibold mt-0.5">${day.dayNumber}</p>
+            <p class="text-[11px] ${isSelected ? 'text-cream/85' : 'text-muted'}">${day.month}</p>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectBookingDay(dayId) {
+      state.selectedDayId = dayId;
+      renderBookingDays();
+    }
+
+    function renderTimeSlots() {
+      const grid = document.getElementById('booking-slots-grid');
+      grid.innerHTML = TIME_SLOTS.map((slot) => {
+        const isSelected = state.selectedSlot === slot;
+        return `
+          <button
+            type="button"
+            onclick="selectTimeSlot('${slot}')"
+            class="py-3 px-3 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
+              isSelected
+                ? 'bg-olive text-white border-olive shadow-sm'
+                : 'bg-cream/60 text-ink border-sage-border hover:bg-sage-tint'
+            }"
+          >
+            ${slot}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectTimeSlot(slot) {
+      state.selectedSlot = slot;
+      renderTimeSlots();
+    }
+
+    function goToStep(step) {
+      if (step > 1 && state.selectedServiceIds.length === 0) {
+        showToast('Veuillez d’abord choisir au moins une prestation.');
+        return;
+      }
+
+      state.bookingStep = step;
+      [1, 2, 3].forEach((s) => {
+        const panel = document.getElementById(`booking-step-${s}`);
+        const stepper = document.getElementById(`stepper-${s}`);
+        const badge = stepper.querySelector('.step-badge');
+
+        if (s === step) {
+          panel.classList.remove('hidden');
+          stepper.className = 'flex items-center gap-2 text-xs sm:text-sm font-semibold text-forest';
+          badge.className = 'step-badge w-7 h-7 rounded-full bg-forest text-white flex items-center justify-center text-xs font-bold';
+        } else {
+          panel.classList.add('hidden');
+          if (s < step) {
+            stepper.className = 'flex items-center gap-2 text-xs sm:text-sm font-medium text-olive';
+            badge.className = 'step-badge w-7 h-7 rounded-full bg-sage-tint text-forest flex items-center justify-center text-xs font-bold';
+          } else {
+            stepper.className = 'flex items-center gap-2 text-xs sm:text-sm font-medium text-muted';
+            badge.className = 'step-badge w-7 h-7 rounded-full bg-white border border-sage-border text-muted flex items-center justify-center text-xs font-bold';
+          }
+        }
+      });
+
+      document.getElementById('booking-step-success').classList.add('hidden');
+
+      const selected = getSelectedServices();
+      const total = selected.reduce((sum, s) => sum + s.price, 0);
+      const day = OPEN_DAYS.find((d) => d.id === state.selectedDayId);
+
+      if (step === 2) {
+        document.getElementById('step2-total-pill').textContent = `${selected.length} soin${selected.length > 1 ? 's' : ''} • ${formatDA(total)}`;
+        renderBookingDays();
+        renderTimeSlots();
+      }
+
+      if (step === 3 && day) {
+        document.getElementById('recap-services-list').textContent = selected.map((s) => `${s.name} (${s.displayPrice})`).join(' • ');
+        document.getElementById('recap-date-time').textContent = `${day.label} à ${state.selectedSlot.replace(':', 'h')}`;
+        document.getElementById('recap-total').textContent = formatDA(total);
+      }
+    }
+
+    function handleBookingSubmit(event) {
+      event.preventDefault();
+      const nameInput = document.getElementById('client-firstname');
+      const phoneInput = document.getElementById('client-phone');
+      const policyCheckbox = document.getElementById('policy-checkbox');
+      const errorBox = document.getElementById('booking-error');
+
+      const name = nameInput.value.trim();
+      const phone = phoneInput.value.trim();
+
+      if (!name || phone.length < 8) {
+        errorBox.textContent = 'Veuillez renseigner votre prénom et un numéro de téléphone valide.';
+        errorBox.classList.remove('hidden');
+        return;
+      }
+
+      if (!policyCheckbox.checked) {
+        errorBox.textContent = 'Veuillez accepter la politique du studio (confirmation avant 19h, retard max 15 min, paiement en espèces).';
+        errorBox.classList.remove('hidden');
+        return;
+      }
+
+      errorBox.classList.add('hidden');
+
+      const selected = getSelectedServices();
+      const total = selected.reduce((sum, s) => sum + s.price, 0);
+      const servicesText = selected.map((s) => s.name).join(' + ');
+      const day = OPEN_DAYS.find((d) => d.id === state.selectedDayId);
+
+      // Add to Espace Cliente appointments list (starts unconfirmed so user can test the 19h confirmation button!)
+      const newAppt = {
+        id: 'rdv-' + Date.now(),
+        clientName: name,
+        servicesText,
+        total,
+        dateLabel: day.label,
+        slot: state.selectedSlot,
+        confirmed: false,
+        isNew: true,
+      };
+      state.appointments.unshift(newAppt);
+
+      // Update Confirmation Screen
+      document.getElementById('success-name').textContent = name;
+      document.getElementById('success-services').textContent = servicesText;
+      document.getElementById('success-datetime').textContent = `${day.label} à ${state.selectedSlot.replace(':', 'h')}`;
+      document.getElementById('success-total').textContent = formatDA(total);
+
+      // Build clean, formatted WhatsApp message link (replaces disorganized DMs!)
+      const waMessage = [
+        `Bonjour Romi Nails Studio,`,
+        `Je souhaite confirmer ma réservation :`,
+        `• Prénom : ${name}`,
+        `• Téléphone : ${phone}`,
+        `• Prestation(s) : ${servicesText}`,
+        `• Total estimé : ${formatDA(total)}`,
+        `• Date & Heure : ${day.label} à ${state.selectedSlot}`,
+        `J'ai bien noté les règles du studio (confirmation avant 19h la veille, retard max 15 min, paiement en espèces). Merci !`,
+      ].join('\n');
+
+      document.getElementById('whatsapp-recap-link').href =
+        `https://wa.me/213561204200?text=${encodeURIComponent(waMessage)}`;
+
+      // Update profile name in Espace Cliente
+      document.getElementById('cliente-profile-name').textContent = name;
+
+      // Show Success State
+      document.getElementById('booking-step-3').classList.add('hidden');
+      document.getElementById('booking-step-success').classList.remove('hidden');
+
+      renderClientAppointments();
+      showToast('Rendez-vous ajouté à votre Espace Cliente.');
+    }
+
+    function resetBooking() {
+      document.getElementById('policy-checkbox').checked = false;
+      goToStep(1);
+    }
+
+    // ---------------------------------------------------------
+    // 7. VIEW 3: ESPACE CLIENTE (CONFIRMATION 19H & CANCEL)
+    // ---------------------------------------------------------
+    function renderClientAppointments() {
+      const container = document.getElementById('cliente-appointments-container');
+      const countBadge = document.getElementById('cliente-upcoming-count');
+      countBadge.textContent = `${state.appointments.length} rendez-vous`;
+
+      if (state.appointments.length === 0) {
+        container.innerHTML = `
+          <div class="rounded-2xl bg-cream border border-dashed border-sage-border p-8 text-center space-y-3">
+            <p class="text-sm text-muted">Vous n'avez aucun rendez-vous programmé pour le moment.</p>
+            <button
+              type="button"
+              onclick="switchView('reserver')"
+              class="px-6 py-2.5 rounded-full bg-forest hover:bg-forest-dark text-white text-xs font-medium transition-colors"
+            >
+              Prendre un rendez-vous
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = state.appointments
+        .map((appt) => {
+          const statusBadge = appt.confirmed
+            ? `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-forest text-white text-xs font-semibold">
+                 <span>Présence confirmée ✓</span>
+               </span>`
+            : `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sand text-forest border border-olive/30 text-xs font-semibold">
+                 <span class="w-1.5 h-1.5 rounded-full bg-forest animate-pulse"></span>
+                 <span>Confirmation requise avant 19h la veille</span>
+               </span>`;
+
+          const confirmBtn = appt.confirmed
+            ? ''
+            : `<button
+                 type="button"
+                 onclick="confirmPresence('${appt.id}')"
+                 class="px-4 py-2 rounded-full bg-forest hover:bg-forest-dark text-white text-xs font-medium transition-all shadow-sm"
+               >
+                 Confirmer ma présence
+               </button>`;
+
+          return `
+            <div class="rounded-2xl bg-cream/75 border ${appt.confirmed ? 'border-forest/40' : 'border-sage-border'} p-5 space-y-4">
+              <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                <div class="space-y-1">
+                  <div class="flex flex-wrap items-center gap-2">
+                    ${statusBadge}
+                    ${
+                      appt.isNew
+                        ? '<span class="px-2 py-0.5 rounded-full bg-sage-tint text-olive text-[10px] font-semibold">Nouveau</span>'
+                        : ''
+                    }
+                  </div>
+                  <h3 class="font-serif text-xl sm:text-2xl font-medium text-forest pt-1">
+                    ${appt.servicesText}
+                  </h3>
+                  <p class="text-xs sm:text-sm text-muted">
+                    ${appt.dateLabel} à ${appt.slot.replace(':', 'h')} • Birkhadem • <strong class="text-forest">${formatDA(appt.total)}</strong> (espèces)
+                  </p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2 shrink-0">
+                  ${confirmBtn}
+                  <button
+                    type="button"
+                    onclick="cancelAppointment('${appt.id}')"
+                    class="px-4 py-2 rounded-full bg-white hover:border-red-300 hover:text-red-700 text-muted border border-sage-border text-xs font-medium transition-colors"
+                  >
+                    Annuler à l'avance
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    function confirmPresence(id) {
+      const appt = state.appointments.find((a) => a.id === id);
+      if (appt) {
+        appt.confirmed = true;
+        renderClientAppointments();
+        showToast('Présence confirmée ✓ Merci pour votre ponctualité !');
+      }
+    }
+
+    function cancelAppointment(id) {
+      state.appointments = state.appointments.filter((a) => a.id !== id);
+      renderClientAppointments();
+      showToast('Rendez-vous annulé à l’avance. Le créneau a été libéré.');
+    }
+
+    // ---------------------------------------------------------
+    // 8. INITIALIZATION
+    // ---------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPriceList();
+      renderBookingServices();
+      updateSelectionSummary();
+      renderClientAppointments();
+    });
+  </script>
+</body>
+</html>
